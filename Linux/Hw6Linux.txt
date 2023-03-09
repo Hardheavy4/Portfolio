@@ -1,0 +1,159 @@
+1. Установить Nginx
+2. * настроить Nginx на работу с PHP-FPM.
+3. Установить Apache.
+4. * Настроить обработку PHP. Добиться одновременной работы с Nginx.
+5. Настроить схему обратного прокси для Nginx (динамика - на Apache).
+6. Установить MySQL. Создать новую базу данных и таблицу в ней.
+
+heavy@heavy-VirtualBox:~$ sudo apt install nginx -y
+[sudo] пароль для heavy: 
+Чтение списков пакетов… Готово
+Построение дерева зависимостей… Готово
+Чтение информации о состоянии… Готово         
+Уже установлен пакет nginx самой новой версии (1.18.0-6ubuntu14.3).
+Следующие пакеты устанавливались автоматически и больше не требуются:
+  libflashrom1 libftdi1-2 libllvm13
+Для их удаления используйте «sudo apt autoremove».
+Обновлено 0 пакетов, установлено 0 новых пакетов, для удаления отмечено 0 пакетов, и 6 пакетов не обновлено.
+heavy@heavy-VirtualBox:~$ sudo nginx -t
+nginx: the configuration file /etc/nginx/nginx.conf syntax is ok
+nginx: configuration file /etc/nginx/nginx.conf test is successful
+
+heavy@heavy-VirtualBox:~$ sudo apt install apache2 -y
+Чтение списков пакетов… Готово
+Построение дерева зависимостей… Готово
+Чтение информации о состоянии… Готово         
+Уже установлен пакет apache2 самой новой версии (2.4.52-1ubuntu4.3).
+Следующие пакеты устанавливались автоматически и больше не требуются:
+  libflashrom1 libftdi1-2 libllvm13
+Для их удаления используйте «sudo apt autoremove».
+Обновлено 0 пакетов, установлено 0 новых пакетов, для удаления отмечено 0 пакетов, и 6 пакетов не обновлено.
+heavy@heavy-VirtualBox:~$ sudo apachetcl -t
+sudo: apachetcl: команда не найдена
+heavy@heavy-VirtualBox:~$ sudo apachectl -t
+AH00558: apache2: Could not reliably determine the server's fully qualified domain name, using 127.0.1.1. Set the 'ServerName' directive globally to suppress this message
+Syntax OK
+
+heavy@heavy-VirtualBox:~$ sudo apt install mysql-server-8.0 -y
+Чтение списков пакетов… Готово
+Построение дерева зависимостей… Готово
+Чтение информации о состоянии… Готово         
+Уже установлен пакет mysql-server-8.0 самой новой версии (8.0.32-0ubuntu0.22.04.2).
+mysql-server-8.0 помечен как установленный вручную.
+Следующие пакеты устанавливались автоматически и больше не требуются:
+  libflashrom1 libftdi1-2 libllvm13
+Для их удаления используйте «sudo apt autoremove».
+Обновлено 0 пакетов, установлено 0 новых пакетов, для удаления отмечено 0 пакетов, и 6 пакетов не обновлено.
+heavy@heavy-VirtualBox:~$ systemctl status mysql
+● mysql.service - MySQL Community Server
+     Loaded: loaded (/lib/systemd/system/mysql.service; enabled; vendor preset:>
+     Active: active (running) since Sat 2023-02-25 17:50:00 MSK; 8min ago
+    Process: 873 ExecStartPre=/usr/share/mysql/mysql-systemd-start pre (code=ex>
+   Main PID: 1071 (mysqld)
+     Status: "Server is operational"
+      Tasks: 38 (limit: 4616)
+     Memory: 424.3M
+        CPU: 5.608s
+     CGroup: /system.slice/mysql.service
+             └─1071 /usr/sbin/mysqld
+
+фев 25 17:49:58 heavy-VirtualBox systemd[1]: Starting MySQL Community Server...
+фев 25 17:50:00 heavy-VirtualBox systemd[1]: Started MySQL Community Server.
+
+
+
+heavy@heavy-VirtualBox:~$ sudo nano /etc/nginx/sites-available/example_nginx.conf
+[sudo] пароль для heavy: 
+
+server {
+
+
+
+     listen   80;
+
+     root /var/www/;
+
+     index index.php;
+ 
+     server_name example.com;
+ 
+     location / {
+             try_files $uri $uri/ /index.php$args;
+     }
+ 
+     location ~ \.php$ {
+             proxy_set_header X-Real-IP  $remote_addr;
+             proxy_set_header X-Forwarded-For $remote_addr;
+             proxy_set_header Host $host;
+             proxy_pass http://127.0.0.1:8080;
+     }
+ 
+     location ~ /\. {
+             deny all;
+     }
+}
+
+heavy@heavy-VirtualBox:~$ cd /etc/nginx/sites-enabled/
+heavy@heavy-VirtualBox:/etc/nginx/sites-enabled$ ln -s ../sites-available/example_nginx.conf example_nginx.conf
+ln: не удалось создать символьную ссылку 'example_nginx.conf': Отказано в доступе
+heavy@heavy-VirtualBox:/etc/nginx/sites-enabled$ sudo ln -s ../sites-available/example_nginx.conf example_nginx.conf
+heavy@heavy-VirtualBox:/etc/nginx/sites-enabled$ service nginx reload
+
+
+heavy@heavy-VirtualBox:/etc/nginx/sites-enabled$ sudo apt install htop
+Чтение списков пакетов… Готово
+Построение дерева зависимостей… Готово
+Чтение информации о состоянии… Готово         
+Следующие пакеты устанавливались автоматически и больше не требуются:
+  libflashrom1 libftdi1-2 libllvm13
+Для их удаления используйте «sudo apt autoremove».
+Предлагаемые пакеты:
+  lm-sensors
+Следующие НОВЫЕ пакеты будут установлены:
+  htop
+Обновлено 0 пакетов, установлено 1 новых пакетов, для удаления отмечено 0 пакетов, и 6 пакетов не обновлено.
+Необходимо скачать 128 kB архивов.
+После данной операции объём занятого дискового пространства возрастёт на 342 kB.
+Пол:1 http://ru.archive.ubuntu.com/ubuntu jammy/main amd64 htop amd64 3.0.5-7build2 [128 kB]
+Получено 128 kB за 0с (328 kB/s)
+Выбор ранее не выбранного пакета htop.
+(Чтение базы данных … на данный момент установлено 187945 файлов и каталогов.)
+Подготовка к распаковке …/htop_3.0.5-7build2_amd64.deb …
+Распаковывается htop (3.0.5-7build2) …
+Настраивается пакет htop (3.0.5-7build2) …
+Обрабатываются триггеры для mailcap (3.70+nmu1ubuntu1) …
+Обрабатываются триггеры для desktop-file-utils (0.26-1ubuntu3) …
+Обрабатываются триггеры для hicolor-icon-theme (0.17-2) …
+Обрабатываются триггеры для gnome-menus (3.36.0-1ubuntu3) …
+Обрабатываются триггеры для man-db (2.10.2-1) …
+heavy@heavy-VirtualBox:/etc/nginx/sites-enabled$ htop
+
+
+heavy@heavy-VirtualBox:/etc/nginx/sites-enabled$ service nginx status
+● nginx.service - A high performance web server and a reverse proxy server
+     Loaded: loaded (/lib/systemd/system/nginx.service; enabled; vendor preset: enabled)
+     Active: active (running) since Mon 2023-02-27 12:45:59 MSK; 19min ago
+       Docs: man:nginx(8)
+    Process: 878 ExecStartPre=/usr/sbin/nginx -t -q -g daemon on; master_process on; (code=exited, status=0/SUCCESS)
+    Process: 966 ExecStart=/usr/sbin/nginx -g daemon on; master_process on; (code=exited, status=0/SUCCESS)
+    Process: 3016 ExecReload=/usr/sbin/nginx -g daemon on; master_process on; -s reload (code=exited, status=0/SUCCESS)
+   Main PID: 970 (nginx)
+      Tasks: 5 (limit: 4616)
+     Memory: 9.7M
+        CPU: 46ms
+     CGroup: /system.slice/nginx.service
+             ├─ 970 "nginx: master process /usr/sbin/nginx -g daemon on; master_process on;"
+             ├─3017 "nginx: worker process" "" "" "" "" "" "" "" "" "" "" "" "" "" "" "" "" "" "" "" "" "" "" "" "" "" "" ""
+             ├─3018 "nginx: worker process" "" "" "" "" "" "" "" "" "" "" "" "" "" "" "" "" "" "" "" "" "" "" "" "" "" "" ""
+             ├─3019 "nginx: worker process" "" "" "" "" "" "" "" "" "" "" "" "" "" "" "" "" "" "" "" "" "" "" "" "" "" "" ""
+             └─3020 "nginx: worker process" "" "" "" "" "" "" "" "" "" "" "" "" "" "" "" "" "" "" "" "" "" "" "" "" "" "" ""
+
+фев 27 12:45:58 heavy-VirtualBox systemd[1]: Starting A high performance web server and a reverse proxy server...
+фев 27 12:45:59 heavy-VirtualBox systemd[1]: Started A high performance web server and a reverse proxy server.
+фев 27 13:02:21 heavy-VirtualBox systemd[1]: Reloading A high performance web server and a reverse proxy server...
+фев 27 13:02:21 heavy-VirtualBox systemd[1]: Reloaded A high performance web server and a reverse proxy server.
+heavy@heavy-VirtualBox:/etc/nginx/sites-enabled$ 
+
+
+
+

@@ -1,0 +1,90 @@
+iptables
+1. Настроить iptables: разрешить подключения только на 22-й и 80-й порты.
+2. Настроить проброс портов локально с порта 80 на порт 8080.
+3. Запретить любой входящий трафик с IP-адреса 3.4.5.6.
+
+Сигналы процессам
+4. Запустите mc. Используя ps, найдите PID процесса, завершите процесс, передав ему сигнал 9.
+
+
+
+heavy@heavy-VirtualBox:~$ sudo iptables -L
+[sudo] пароль для heavy: 
+Chain INPUT (policy ACCEPT)
+target     prot opt source               destination         
+
+Chain FORWARD (policy ACCEPT)
+target     prot opt source               destination         
+
+Chain OUTPUT (policy ACCEPT)
+target     prot opt source               destination         
+heavy@heavy-VirtualBox:~$ sudo iptables -P INPUT DROP
+heavy@heavy-VirtualBox:~$ sudo iptables -L
+Chain INPUT (policy DROP)
+target     prot opt source               destination         
+
+Chain FORWARD (policy ACCEPT)
+target     prot opt source               destination         
+
+Chain OUTPUT (policy ACCEPT)
+target     prot opt source               destination         
+heavy@heavy-VirtualBox:~$ sudo iptables -A INPUT -i eth0 -p tcp --dport 80 -j ACCEPT
+heavy@heavy-VirtualBox:~$ sudo iptables -A INPUT -i eth0 -p tcp --dport 22 -j ACCEPT
+\heavy@heavy-VirtualBox:~$ sudo iptables -A INPUT -i eth0 -p tcp --dport 22 -j ACCEPT
+heavy@heavy-VirtualBox:~$ sudo iptables -L
+Chain INPUT (policy DROP)
+target     prot opt source               destination         
+ACCEPT     tcp  --  anywhere             anywhere             tcp dpt:http
+ACCEPT     tcp  --  anywhere             anywhere             tcp dpt:ssh
+ACCEPT     tcp  --  anywhere             anywhere             tcp dpt:ssh
+
+Chain FORWARD (policy ACCEPT)
+target     prot opt source               destination         
+
+Chain OUTPUT (policy ACCEPT)
+target     prot opt source               destination         
+heavy@heavy-VirtualBox:~$ sudo iptables -t nat -I PREROUTING -p tcp --dport 80 -j REDIRECT --to-port 8080
+heavy@heavy-VirtualBox:~$ sudo iptables -L
+Chain INPUT (policy DROP)
+target     prot opt source               destination         
+ACCEPT     tcp  --  anywhere             anywhere             tcp dpt:http
+ACCEPT     tcp  --  anywhere             anywhere             tcp dpt:ssh
+ACCEPT     tcp  --  anywhere             anywhere             tcp dpt:ssh
+
+Chain FORWARD (policy ACCEPT)
+target     prot opt source               destination         
+
+Chain OUTPUT (policy ACCEPT)
+target     prot opt source               destination         
+heavy@heavy-VirtualBox:~$ sudo iptables -L -t nat
+Chain PREROUTING (policy ACCEPT)
+target     prot opt source               destination         
+REDIRECT   tcp  --  anywhere             anywhere             tcp dpt:http redir ports 8080
+
+Chain INPUT (policy ACCEPT)
+target     prot opt source               destination         
+
+Chain OUTPUT (policy ACCEPT)
+target     prot opt source               destination         
+
+Chain POSTROUTING (policy ACCEPT)
+target     prot opt source               destination         
+
+heavy@heavy-VirtualBox:~$ sudo iptables -A INPUT -p tcp -s 192.168.56.1 -j DROP
+[sudo] пароль для heavy: 
+heavy@heavy-VirtualBox:~$ ping 192.168.56.1
+PING 192.168.56.1 (192.168.56.1) 56(84) bytes of data.
+^C                                                      
+--- 192.168.56.1 ping statistics ---
+79 packets transmitted, 0 received, 100% packet loss, time 79877ms
+
+открыли mc  в другом терминале, в нашем :
+
+heavy@heavy-VirtualBox:~$ ps -aux | grep mc
+heavy       2728  0.0  0.2  32036 10384 pts/0    S+   11:24   0:00 mc
+heavy       2781  0.0  0.0  17756  2424 pts/1    S+   11:26   0:00 grep --color=auto mc
+heavy@heavy-VirtualBox:~$ sudo kill -9 2728
+[sudo] пароль для heavy: 
+
+в терминале с mc появилась надпись "убито"
+

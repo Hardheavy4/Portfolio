@@ -1,0 +1,182 @@
+Создать каталоги students и mentors в домашней директории, а в них — текстовые файлы students_list.txt и mentors_list.txt соответственно.
+Открыть созданные в п.1 файлы в любом текстовом редакторе и заполнить их (в соответствии с названием) списком Ваших одногруппников и наставников на данном потоке.
+Переместите файл mentors_list.txt в папку students.
+Удалите папку mentors.
+Переименуйте папку students в students_and_mentors.
+Удалите папку students_and_mentors вместе с содержимым.
+*. Создать файл file1 и наполнить его произвольным содержимым. Скопировать его в file2. Создать символическую ссылку file3 на file1. Создать жёсткую ссылку file4 на file1. Посмотреть, какие inode у файлов. Удалить file1. Что стало с остальными созданными файлами? Попробовать вывести их на экран.
+
+
+
+Создать каталоги students и mentors в домашней директории, а в них — текстовые файлы students_list.txt и mentors_list.txt соответственно.
+
+heavy@heavy-VirtualBox:~$ mkdir students
+heavy@heavy-VirtualBox:~$ mkdir mentors
+heavy@heavy-VirtualBox:~$ cd students
+heavy@heavy-VirtualBox:~/students$ tree
+.
+
+0 directories, 0 files
+heavy@heavy-VirtualBox:~/students$ touch students_list.txt
+heavy@heavy-VirtualBox:~/students$ cd ..
+heavy@heavy-VirtualBox:~$ cd mentors
+heavy@heavy-VirtualBox:~/mentors$ touch mentors_list.txt
+heavy@heavy-VirtualBox:~/mentors$ ls -ah
+.  ..  mentors_list.txt
+
+heavy@heavy-VirtualBox:~/mentors$ cd ..
+heavy@heavy-VirtualBox:~$ tree
+.
+├── Desktop
+├── Documents
+├── Downloads
+├── mentors
+│   └── mentors_list.txt
+├── Music
+├── Pictures
+│   └── Снимки экрана
+│       ├── Снимок экрана от 2023-02-05 22-29-29.png
+│       └── Снимок экрана от 2023-02-05 22-29-51.png
+├── Public
+├── snap
+│   ├── firefox
+│   │   ├── 1635
+│   │   ├── 2311
+│   │   ├── common
+│   │   └── current -> 2311
+│   └── snapd-desktop-integration
+│       ├── 14
+│       │   ├── Desktop
+│       │   ├── Documents
+│       │   ├── Downloads
+│       │   ├── Music
+│       │   ├── Pictures
+│       │   ├── Public
+│       │   ├── Templates
+│       │   └── Videos
+│       ├── 49
+│       │   ├── Desktop
+│       │   ├── Documents
+│       │   ├── Downloads
+│       │   ├── Music
+│       │   ├── Pictures
+│       │   ├── Public
+│       │   ├── Templates
+│       │   └── Videos
+│       ├── common
+│       └── current -> 49
+├── students
+│   └── students_list.txt
+├── Templates
+└── Videos
+
+38 directories, 4 files
+
+Переместите файл mentors_list.txt в папку students.
+
+heavy@heavy-VirtualBox:~$ cd mentors
+heavy@heavy-VirtualBox:~/mentors$ mv mentors_list.txt ../students
+heavy@heavy-VirtualBox:~/mentors$ cd ..
+
+Удалите папку mentors.
+
+heavy@heavy-VirtualBox:~$ cd students
+heavy@heavy-VirtualBox:~/students$ cd ..
+heavy@heavy-VirtualBox:~$ rmdir mentors
+
+Переименуйте папку students в students_and_mentors.
+
+heavy@heavy-VirtualBox:~$ mv students students_and_mentors
+
+Удалите папку students_and_mentors вместе с содержимым.
+
+heavy@heavy-VirtualBox:~$ rm -r students_and_mentors/
+
+
+ДОП:  *. Создать файл file1 и наполнить его произвольным содержимым. Скопировать его в file2. Создать символическую ссылку file3 на file1. Создать жёсткую ссылку file4 на file1. Посмотреть, какие inode у файлов. Удалить file1. Что стало с остальными созданными файлами? Попробовать вывести их на экран.
+
+heavy@heavy-VirtualBox:~$ eniki beneki eli vareniki>file1
+
+heavy@heavy-VirtualBox:~$ echo eniki beneki eli vareniki>file1
+heavy@heavy-VirtualBox:~$ cp file1 file2
+heavy@heavy-VirtualBox:~$ touch file3
+heavy@heavy-VirtualBox:~$ rm file3
+heavy@heavy-VirtualBox:~$ ln -s file1 file3
+
+heavy@heavy-VirtualBox:~$ ln file1 file4
+heavy@heavy-VirtualBox:~$ ^C
+heavy@heavy-VirtualBox:~$ rm file4
+heavy@heavy-VirtualBox:~$ touch file4
+heavy@heavy-VirtualBox:~$ rm file4
+
+heavy@heavy-VirtualBox:~$ pwd
+/home/heavy
+heavy@heavy-VirtualBox:~$ touch home/heavy/downloads/file4
+
+heavy@heavy-VirtualBox:~$ ls -l
+итого 44
+drwxr-xr-x 2 heavy heavy 4096 фев  5 21:24 Desktop
+drwxr-xr-x 2 heavy heavy 4096 фев  5 16:02 Documents
+drwxr-xr-x 2 heavy heavy 4096 фев  5 16:02 Downloads
+-rw-rw-r-- 1 heavy heavy   26 фев  9 13:06 file1
+-rw-rw-r-- 1 heavy heavy   26 фев  9 13:08 file2
+lrwxrwxrwx 1 heavy heavy    5 фев  9 13:36 file3 -> file1
+drwxr-xr-x 2 heavy heavy 4096 фев  5 16:02 Music
+drwxr-xr-x 3 heavy heavy 4096 фев  5 22:29 Pictures
+drwxr-xr-x 2 heavy heavy 4096 фев  5 16:02 Public
+drwx------ 4 heavy heavy 4096 фев  5 16:09 snap
+drwxr-xr-x 2 heavy heavy 4096 фев  5 16:02 Templates
+drwxr-xr-x 2 heavy heavy 4096 фев  5 16:02 Videos
+
+heavy@heavy-VirtualBox:~$ touch /home/heavy/Downloads/file4
+
+heavy@heavy-VirtualBox:~$ rm /home/heavy/Downloads/file4
+
+heavy@heavy-VirtualBox:~$ ln /home/heavy/file1 /home/heavy/Downloads/file4
+
+heavy@heavy-VirtualBox:~$ sudo apt install <deb name>
+
+heavy@heavy-VirtualBox:~$ ls -li
+итого 44
+2096956 drwxr-xr-x 2 heavy heavy 4096 фев  5 21:24 Desktop
+2096960 drwxr-xr-x 2 heavy heavy 4096 фев  5 16:02 Documents
+2096957 drwxr-xr-x 2 heavy heavy 4096 фев  9 14:29 Downloads
+2097993 -rw-rw-r-- 2 heavy heavy   26 фев  9 13:06 file1
+2097932 -rw-rw-r-- 1 heavy heavy   26 фев  9 13:08 file2
+2097513 lrwxrwxrwx 1 heavy heavy    5 фев  9 13:36 file3 -> file1
+2096961 drwxr-xr-x 2 heavy heavy 4096 фев  5 16:02 Music
+2096962 drwxr-xr-x 3 heavy heavy 4096 фев  5 22:29 Pictures
+2096959 drwxr-xr-x 2 heavy heavy 4096 фев  5 16:02 Public
+2096899 drwx------ 4 heavy heavy 4096 фев  5 16:09 snap
+2096958 drwxr-xr-x 2 heavy heavy 4096 фев  5 16:02 Templates
+2096963 drwxr-xr-x 2 heavy heavy 4096 фев  5 16:02 Videos
+
+heavy@heavy-VirtualBox:~$ rm file1
+
+после удаления файл1: файл2(копия) остался прежним, файл3(символическая ссылка) помечен как испорченная ссылка,
+файл4(жесткая ссылка) открывается и сохранил содержимое
+
+heavy@heavy-VirtualBox:~$ ls -li
+итого 40
+2096956 drwxr-xr-x 2 heavy heavy 4096 фев  5 21:24 Desktop
+2096960 drwxr-xr-x 2 heavy heavy 4096 фев  5 16:02 Documents
+2096957 drwxr-xr-x 2 heavy heavy 4096 фев  9 14:29 Downloads
+2097932 -rw-rw-r-- 1 heavy heavy   26 фев  9 13:08 file2
+2097513 lrwxrwxrwx 1 heavy heavy    5 фев  9 13:36 file3 -> file1       (файл3 т файл1 горят красным)
+2096961 drwxr-xr-x 2 heavy heavy 4096 фев  5 16:02 Music
+2096962 drwxr-xr-x 3 heavy heavy 4096 фев  5 22:29 Pictures
+2096959 drwxr-xr-x 2 heavy heavy 4096 фев  5 16:02 Public
+2096899 drwx------ 4 heavy heavy 4096 фев  5 16:09 snap
+2096958 drwxr-xr-x 2 heavy heavy 4096 фев  5 16:02 Templates
+2096963 drwxr-xr-x 2 heavy heavy 4096 фев  5 16:02 Videos
+heavy@heavy-VirtualBox:~$ 
+ 
+heavy@heavy-VirtualBox:~$ cat file2
+eniki beneki eli vareniki
+heavy@heavy-VirtualBox:~$ cat file3
+cat: file3: Нет такого файла или каталога
+heavy@heavy-VirtualBox:~$ cat file4
+cat: file4: Нет такого файла или каталога
+heavy@heavy-VirtualBox:~$ cat /home/heavy/Downloads/file4
+eniki beneki eli vareniki
+heavy@heavy-VirtualBox:~$ 

@@ -1,0 +1,140 @@
+Установить Ubuntu Desktop на виртуальную машину.
+Установить гостевые дополнения ОС.
+Установить Midnight Commander.
+* Установить SSH-соединение с виртуальной машиной из хостовой.
+
+
+
+
+
+heavy@heavy-VirtualBox:~$ ip addr
+1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1000
+    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+    inet 127.0.0.1/8 scope host lo
+       valid_lft forever preferred_lft forever
+    inet6 ::1/128 scope host 
+       valid_lft forever preferred_lft forever
+2: enp0s3: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc fq_codel state UP group default qlen 1000
+    link/ether 08:00:27:50:21:ba brd ff:ff:ff:ff:ff:ff
+    inet 10.0.2.15/24 brd 10.0.2.255 scope global dynamic noprefixroute enp0s3
+       valid_lft 85457sec preferred_lft 85457sec
+    inet6 fe80::b96c:a8b2:687:6e10/64 scope link noprefixroute 
+       valid_lft forever preferred_lft forever
+3: enp0s8: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc fq_codel state UP group default qlen 1000
+    link/ether 08:00:27:ad:77:f7 brd ff:ff:ff:ff:ff:ff
+    inet 192.168.56.101/24 brd 192.168.56.255 scope global dynamic noprefixroute enp0s8
+       valid_lft 557sec preferred_lft 557sec
+    inet6 fe80::74ad:a7ab:2a84:916b/64 scope link noprefixroute 
+       valid_lft forever preferred_lft forever
+
+
+
+Ip машины:
+heavy@heavy-VirtualBox:~$ hostname -I
+10.0.2.15 192.168.56.101 
+
+пинг с хоста:
+C:\Users\User>ping 192.168.56.101
+
+Обмен пакетами с 192.168.56.101 по с 32 байтами данных:
+Ответ от 192.168.56.101: число байт=32 время<1мс TTL=64
+Ответ от 192.168.56.101: число байт=32 время<1мс TTL=64
+Ответ от 192.168.56.101: число байт=32 время<1мс TTL=64
+Ответ от 192.168.56.101: число байт=32 время<1мс TTL=64
+
+ПУТТИ:
+
+login as: heavy
+heavy@192.168.56.101's password:
+Welcome to Ubuntu 22.04.1 LTS (GNU/Linux 5.15.0-58-generic x86_64)
+
+ * Documentation:  https://help.ubuntu.com
+ * Management:     https://landscape.canonical.com
+ * Support:        https://ubuntu.com/advantage
+
+228 обновлений может быть применено немедленно.
+95 из этих обновлений, являются стандартными обновлениями безопасности.
+Чтобы просмотреть дополнительные обновления выполните: apt list --upgradable
+
+
+The programs included with the Ubuntu system are free software;
+the exact distribution terms for each program are described in the
+individual files in /usr/share/doc/*/copyright.
+
+Ubuntu comes with ABSOLUTELY NO WARRANTY, to the extent permitted by
+applicable law.
+
+heavy@heavy-VirtualBox:~$ ^C
+heavy@heavy-VirtualBox:~$ login as: heavy
+heavy@192.168.56.101's password:
+Welcome to Ubuntu 22.04.1 LTS (GNU/Linux 5.15.0-58-generic x86_64)
+
+ * Documentation:  https://help.ubuntu.com
+ * Management:     https://landscape.canonical.com
+ * Support:        https://ubuntu.com/advantage
+
+228 обновлений может быть применено немедленно.
+95 из этих обновлений, являются стандартными обновлениями безопасности.
+Чтобы просмотреть дополнительные обновления выполните: apt list --upgradable
+
+
+The programs included with the Ubuntu system are free software;
+the exact distribution terms for each program are described in the
+individual files in /usr/share/doc/*/copyright.
+
+Ubuntu comes with ABSOLUTELY NO WARRANTY, to the extent permitted by
+applicable law.
+
+
+heavy@heavy-VirtualBox:~$
+login as: heavy
+heavy@192.168.56.101's password:
+Welcome to Ubuntu 22.04.1 LTS (GNU/Linux 5.15.0-58-generic x86_64)
+
+ * Documentation:  https://help.ubuntu.com
+ * Management:     https://landscape.canonical.com
+ * Support:        https://ubuntu.com/advantage
+
+228 обновлений может быть применено немедленно.
+95 из этих обновлений, являются стандартными обновлениями безопасности.
+Чтобы просмотреть дополнительные обновления выполните: apt list --upgradable
+
+
+The programs included with the Ubuntu system are free software;
+the exact distribution terms for each program are described in the
+individual files in /usr/share/doc/*/copyright.
+
+Ubuntu comes with ABSOLUTELY NO WARRANTY, to the extent permitted by
+heavy@heavy-VirtualBox:~$ ^C NO WARRANTY, to the extent permitted bygradable
+
+
+heavy@heavy-VirtualBox:~$ sudo systemctl enable ssh
+[sudo] пароль для heavy: 
+Synchronizing state of ssh.service with SysV service script with /lib/systemd/systemd-sysv-install.
+Executing: /lib/systemd/systemd-sysv-install enable ssh
+heavy@heavy-VirtualBox:~$ ^C
+heavy@heavy-VirtualBox:~$ 
+
+sudo systemctl status ssh
+
+● ssh.service - OpenBSD Secure Shell server
+     Loaded: loaded (/lib/systemd/system/ssh.service; enabled; vendor preset: enabled)
+     Active: active (running) since Tue 2023-02-07 08:51:04 MSK; 2min 4s ago
+       Docs: man:sshd(8)
+             man:sshd_config(5)
+    Process: 826 ExecStartPre=/usr/sbin/sshd -t (code=exited, status=0/SUCCESS)
+   Main PID: 842 (sshd)
+      Tasks: 1 (limit: 4625)
+     Memory: 3.6M
+        CPU: 17ms
+     CGroup: /system.slice/ssh.service
+             └─842 "sshd: /usr/sbin/sshd -D [listener] 0 of 10-100 startups"
+
+фев 07 08:51:04 heavy-VirtualBox systemd[1]: Starting OpenBSD Secure Shell server...
+фев 07 08:51:04 heavy-VirtualBox sshd[842]: Server listening on 0.0.0.0 port 22.
+фев 07 08:51:04 heavy-VirtualBox sshd[842]: Server listening on :: port 22.
+фев 07 08:51:04 heavy-VirtualBox systemd[1]: Started OpenBSD Secure Shell server.
+~
+
+
+

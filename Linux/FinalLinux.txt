@@ -1,0 +1,117 @@
+1. Вывести на экран 3 раза имя пользователя, от которого запускается команда.
+
+heavy@heavy-VirtualBox:~$ cat > heavy.sh
+#!/bin/bush
+for char in {1..3}
+do
+echo $USER
+done
+
+heavy@heavy-VirtualBox:~$ bash heavy.sh 
+heavy
+heavy
+heavy
+
+2. Вывести с помощью цикла while все четные числа от 0 до 100 включительно.
+
+heavy@heavy-VirtualBox:~$ nano print100
+
+$ cat > print100
+#! bin/bash/
+x=0
+while [ $x -lt 102 ]
+do
+ printf "${x} "
+ let x+=2
+done
+echo "" 
+
+heavy@heavy-VirtualBox:~$ bash print100 
+0 2 4 6 8 10 12 14 16 18 20 22 24 26 28 30 32 34 36 38 40 42 44 46 48 50 52 54 56 58 60 62 64 66 68 70 72 74 76 78 80 82 84 86 88 90 92 94 96 98 100 
+
+3. Командой 'cut' вывести для текущей папки права доступа файлов (первая колонка вывода команды ‘ll’). Отсортировать этот вывод (команда ‘sort’). Удалить дубликаты (команда ‘uniq’). Использовать для решения конвейер обработки задач (pipeline - вертикальный слэш).
+
+heavy@heavy-VirtualBox:~$ ll | cut -b 1-10
+итого
+drwxr-x---
+drwxr-xr-x
+-rw-------
+-rw-r--r--
+-rw-r--r--
+drwx------
+drwx------
+drwxr-xr-x
+-rw-rw-r--
+drwxr-xr-x
+drwxr-xr-x
+-rw-rw-r--
+lrwxrwxrwx
+drwxr-xr-x
+-rw-rw-r--
+-rw-------
+drwx------
+drwxr-xr-x
+-rw-r--r--
+drwxr-xr-x
+-rw-rw-r--
+-rw-r--r--
+drwxr-xr-x
+-rw-------
+-rw-rw-r--
+drwx------
+-rw-r--r--
+drwxr-xr-x
+-rw-r--r--
+-rw-r-----
+-rw-r-----
+-rw-r-----
+-rw-r-----
+drwxr-xr-x
+-rw-------
+heavy@heavy-VirtualBox:~$ ll | cut -b 1-10 | sort
+drwx------
+drwx------
+drwx------
+drwx------
+drwxr-x---
+drwxr-xr-x
+drwxr-xr-x
+drwxr-xr-x
+drwxr-xr-x
+drwxr-xr-x
+drwxr-xr-x
+drwxr-xr-x
+drwxr-xr-x
+drwxr-xr-x
+drwxr-xr-x
+lrwxrwxrwx
+-rw-------
+-rw-------
+-rw-------
+-rw-------
+-rw-r-----
+-rw-r-----
+-rw-r-----
+-rw-r-----
+-rw-r--r--
+-rw-r--r--
+-rw-r--r--
+-rw-r--r--
+-rw-r--r--
+-rw-r--r--
+-rw-rw-r--
+-rw-rw-r--
+-rw-rw-r--
+-rw-rw-r--
+-rw-rw-r--
+итого
+heavy@heavy-VirtualBox:~$ ll | cut -b 1-10 | sort | uniq
+drwx------
+drwxr-x---
+drwxr-xr-x
+lrwxrwxrwx
+-rw-------
+-rw-r-----
+-rw-r--r--
+-rw-rw-r--
+итого

@@ -1,0 +1,147 @@
+Подключить репозиторий с nginx любым удобным способом, установить nginx и потом удалить nginx, используя утилиту dpkg.
+Установить пакет на свой выбор, используя snap.
+
+
+heavy@heavy-VirtualBox:~$ sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys C300EE8C
+[sudo] пароль для heavy: 
+Warning: apt-key is deprecated. Manage keyring files in trusted.gpg.d instead (see apt-key(8)).
+Executing: /tmp/apt-key-gpghome.EfoyGSm17d/gpg.1.sh --keyserver keyserver.ubuntu.com --recv-keys C300EE8C
+gpg: ключ 00A6F0A3C300EE8C: "Launchpad Stable" не изменен
+gpg: Всего обработано: 1
+gpg:              неизмененных: 1
+
+Теперь при любом использовании команды apt-key вы будете получать сообщение:
+
+1
+Warning: apt-key is deprecated. Manage keyring files in trusted.gpg.d instead (see apt-key(8)).
+Оно означает, что программа apt-key теперь устарела. Для управления файлами ключей теперь используйте trusted.gpg.d. Если перевести на человеческий язык, теперь мы должны самостоятельно добавлять файлы в папку /etc/apt/trusted.gpg.d/.
+Если открыть рекомендованную страницу справки (man apt-key), что там написано, что данная команда и все её функции устарели
+
+
+heavy@heavy-VirtualBox:~$ sudo echo "deb  http://ppa.launchpad.net/nginx/stable/ubuntu lucid main" >> /etc/apt/sources.list
+bash: /etc/apt/sources.list: Отказано в доступе
+heavy@heavy-VirtualBox:~$ 
+heavy@heavy-VirtualBox:~$ sudo su
+root@heavy-VirtualBox:/home/heavy# echo "deb  http://ppa.launchpad.net/nginx/stable/ubuntu lucid main" >> /etc/apt/sources.list
+root@heavy-VirtualBox:/home/heavy# 
+
+root@heavy-VirtualBox:/home/heavy# sudo apt update
+Сущ:1 http://ru.archive.ubuntu.com/ubuntu jammy InRelease
+Сущ:2 http://ru.archive.ubuntu.com/ubuntu jammy-updates InRelease                                                             
+Сущ:3 http://ru.archive.ubuntu.com/ubuntu jammy-backports InRelease                                                           
+Пол:4 http://ppa.launchpad.net/nginx/stable/ubuntu lucid InRelease [14,3 kB]                                              
+Сущ:5 http://security.ubuntu.com/ubuntu jammy-security InRelease                  
+Ошб:4 http://ppa.launchpad.net/nginx/stable/ubuntu lucid InRelease
+  Следующие подписи неверны: 8B3981E7A6852F782CC4951600A6F0A3C300EE8C
+Чтение списков пакетов… Готово
+W: http://ppa.launchpad.net/nginx/stable/ubuntu/dists/lucid/InRelease: Key is stored in legacy trusted.gpg keyring (/etc/apt/trusted.gpg), see the DEPRECATION section in apt-key(8) for details.
+W: Ошибка GPG: http://ppa.launchpad.net/nginx/stable/ubuntu lucid InRelease: Следующие подписи неверны: 8B3981E7A6852F782CC4951600A6F0A3C300EE8C
+E: Репозиторий «http://ppa.launchpad.net/nginx/stable/ubuntu lucid InRelease» не подписан.
+N: Обновление из этого репозитория нельзя выполнить безопасным способом, поэтому по умолчанию он отключён.
+N: Информацию о создании репозитория и настройках пользователя смотрите в справочной странице apt-secure(8).
+root@heavy-VirtualBox:/home/heavy# sudo apt install -y nginx
+Чтение списков пакетов… Готово
+Построение дерева зависимостей… Готово
+Чтение информации о состоянии… Готово         
+Следующий пакет устанавливался автоматически и больше не требуется:
+  systemd-hwe-hwdb
+Для его удаления используйте «sudo apt autoremove».
+Следующие НОВЫЕ пакеты будут установлены:
+  nginx
+Обновлено 0 пакетов, установлено 1 новых пакетов, для удаления отмечено 0 пакетов, и 252 пакетов не обновлено.
+Необходимо скачать 3 882 B архивов.
+После данной операции объём занятого дискового пространства возрастёт на 50,2 kB.
+Пол:1 http://ru.archive.ubuntu.com/ubuntu jammy-updates/main amd64 nginx amd64 1.18.0-6ubuntu14.3 [3 882 B]
+Получено 3 882 B за 0с (16,2 kB/s)    
+Выбор ранее не выбранного пакета nginx.
+(Чтение базы данных … на данный момент установлено 185399 файлов и каталогов.)
+Подготовка к распаковке …/nginx_1.18.0-6ubuntu14.3_amd64.deb …
+Распаковывается nginx (1.18.0-6ubuntu14.3) …
+Настраивается пакет nginx (1.18.0-6ubuntu14.3) …
+root@heavy-VirtualBox:/home/heavy# dpkg -l nginx
+Желаемый=неизвестно[u]/установить[i]/удалить[r]/вычистить[p]/зафиксировать[h]
+| Состояние=не[n]/установлен[i]/настроен[c]/распакован[U]/частично настроен[F]/
+            частично установлен[H]/trig-aWait/Trig-pend
+|/ Ошибка?=(нет)/требуется переустановка[R] (верхний регистр
+в полях состояния и ошибки указывает на ненормальную ситуацию)
+||/ Имя            Версия             Архитектура  Описание
++++-==============-==================-============-==========================================
+ii  nginx          1.18.0-6ubuntu14.3 amd64        small, powerful, scalable web/proxy server
+root@heavy-VirtualBox:/home/heavy# apt remove -y nginx
+Чтение списков пакетов… Готово
+Построение дерева зависимостей… Готово
+Чтение информации о состоянии… Готово         
+Следующие пакеты устанавливались автоматически и больше не требуются:
+  libnginx-mod-http-geoip2 libnginx-mod-http-image-filter libnginx-mod-http-xslt-filter libnginx-mod-mail libnginx-mod-stream libnginx-mod-stream-geoip2 nginx-common nginx-core systemd-hwe-hwdb
+Для их удаления используйте «sudo apt autoremove».
+Следующие пакеты будут УДАЛЕНЫ:
+  nginx
+Обновлено 0 пакетов, установлено 0 новых пакетов, для удаления отмечено 1 пакетов, и 252 пакетов не обновлено.
+После данной операции объём занятого дискового пространства уменьшится на 50,2 kB.
+(Чтение базы данных … на данный момент установлено 185402 файла и каталога.)
+Удаляется nginx (1.18.0-6ubuntu14.3) …
+root@heavy-VirtualBox:/home/heavy# dpkg -r nginx
+dpkg: предупреждение: игнорируется запрос на удаление неустановленного пакета nginx
+root@heavy-VirtualBox:/home/heavy# dpkg -l nginx
+Желаемый=неизвестно[u]/установить[i]/удалить[r]/вычистить[p]/зафиксировать[h]
+| Состояние=не[n]/установлен[i]/настроен[c]/распакован[U]/частично настроен[F]/
+            частично установлен[H]/trig-aWait/Trig-pend
+|/ Ошибка?=(нет)/требуется переустановка[R] (верхний регистр
+в полях состояния и ошибки указывает на ненормальную ситуацию)
+||/ Имя            Версия       Архитектура  Описание
++++-==============-============-============-=======================================
+un  nginx          <нет>        <нет>        (описание недоступно)
+root@heavy-VirtualBox:/home/heavy# snap list
+Название                   Версия            Правка  Канал            Издатель      Примечание
+bare                       1.0               5       latest/stable    canonical✓    base
+core18                     20230207          2697    latest/stable    canonical✓    base
+core20                     20230126          1822    latest/stable    canonical✓    base
+firefox                    110.0-3           2356    latest/stable/…  mozilla✓      -
+gnome-3-38-2004            0+git.6f39565     119     latest/stable/…  canonical✓    -
+gtk-common-themes          0.1-81-g442e511   1535    latest/stable/…  canonical✓    -
+postman                    10.10.3           191     v10/stable       postman-inc✓  -
+snap-store                 41.3-66-gfe1e325  638     latest/stable/…  canonical✓    -
+snapd                      2.58.2            18357   latest/stable    canonical✓    snapd
+snapd-desktop-integration  0.1               49      latest/stable/…  canonical✓    -
+root@heavy-VirtualBox:/home/heavy# snap search postman
+Название         Версия   Издатель          Примечание  Описание
+postman          10.10.3  postman-inc✓      -           API Development Environment
+restfox          0.0.7    flawid            -           Lightweight REST / HTTP Client
+my-electron-app  2.3.0    starship-postman  -           A Starship port of Electron's hello world app
+root@heavy-VirtualBox:/home/heavy# sudo snap install postman
+snap "postman" is already installed, see 'snap help refresh'
+root@heavy-VirtualBox:/home/heavy# snap list
+Название                   Версия            Правка  Канал            Издатель      Примечание
+bare                       1.0               5       latest/stable    canonical✓    base
+core18                     20230207          2697    latest/stable    canonical✓    base
+core20                     20230126          1822    latest/stable    canonical✓    base
+firefox                    110.0-3           2356    latest/stable/…  mozilla✓      -
+gnome-3-38-2004            0+git.6f39565     119     latest/stable/…  canonical✓    -
+gtk-common-themes          0.1-81-g442e511   1535    latest/stable/…  canonical✓    -
+postman                    10.10.3           191     v10/stable       postman-inc✓  -
+snap-store                 41.3-66-gfe1e325  638     latest/stable/…  canonical✓    -
+snapd                      2.58.2            18357   latest/stable    canonical✓    snapd
+snapd-desktop-integration  0.1               49      latest/stable/…  canonical✓    -
+root@heavy-VirtualBox:/home/heavy# postman
+mkdir: cannot create directory '/run/user/0': Permission denied
+The disableGPU setting is set to undefined
+Not disabling GPU
+Authorization required, but no authorization protocol specified
+[11475:0219/143733.159629:ERROR:ozone_platform_x11.cc(248)] Missing X server or $DISPLAY
+[11475:0219/143733.159669:ERROR:env.cc(225)] The platform failed to initialize.  Exiting.
+[0219/143733.160377:ERROR:scoped_ptrace_attach.cc(27)] ptrace: Operation not permitted (1)
+Ошибка сегментирования (стек памяти сброшен на диск)
+root@heavy-VirtualBox:/home/heavy# nano test.txt
+root@heavy-VirtualBox:/home/heavy# crontab –e
+–e: Нет такого файла или каталога
+root@heavy-VirtualBox:/home/heavy# crontab -e
+no crontab for root - using an empty one
+No modification made
+root@heavy-VirtualBox:/home/heavy# crontab -e
+no crontab for root - using an empty one
+crontab: installing new crontab
+root@heavy-VirtualBox:/home/heavy# 
+
+
+
+

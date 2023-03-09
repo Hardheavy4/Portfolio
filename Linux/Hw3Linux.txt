@@ -1,0 +1,429 @@
+1. Управление пользователями:
+a) создать нового пользователя;
+b) убедиться, что информация о нем появилась в соответствующих файлах в системе;
+c) удалить созданного пользователя;
+
+2. Управление группами:
+a) создать группу;
+b) попрактиковаться в смене групп у пользователей;
+c) добавить пользователя в группу, не меняя основной;
+d) удалить пользователя из группы.
+
+3. Работа с группами.
+a) Создать пользователя с правами суперпользователя. Проверить результат.
+
+b) * Создать группу developer и нескольких пользователей, входящих в неё. Создать директорию для совместной работы. Сделать так, чтобы созданные одними пользователями файлы могли изменять другие пользователи этой группы.
+
+
+
+
+
+heavy@heavy-VirtualBox:~$ sudo useradd -s bin/bash -m -d /home/user1 user1
+[sudo] пароль для heavy: 
+useradd: неверная оболочка «bin/bash»
+heavy@heavy-VirtualBox:~$ sudo useradd -s /bin/bash -m -d /home/user1 user1
+useradd: warning: the home directory /home/user1 already exists.
+useradd: Not copying any file from skel directory into it.
+heavy@heavy-VirtualBox:~$ 
+heavy@heavy-VirtualBox:~$ ls/home
+bash: ls/home: Нет такого файла или каталога
+heavy@heavy-VirtualBox:~$ ls/ home
+bash: ls/: Нет такого файла или каталога
+heavy@heavy-VirtualBox:~$ ls / home
+ls: невозможно получить доступ к 'home': Нет такого файла или каталога
+/:
+bin    dev   lib    libx32      mnt   root  snap      sys  var
+boot   etc   lib32  lost+found  opt   run   srv       tmp
+cdrom  home  lib64  media       proc  sbin  swapfile  usr
+heavy@heavy-VirtualBox:~$ ls /home
+heavy  user1
+heavy@heavy-VirtualBox:~$ rm -R user1
+rm: невозможно удалить 'user1': Нет такого файла или каталога
+heavy@heavy-VirtualBox:~$ rm -R /home/user1
+rm: спуститься в защищённый от записи каталог '/home/user1'? y
+rm: удалить защищённый от записи каталог '/home/user1'? y
+rm: невозможно удалить '/home/user1': Отказано в доступе
+heavy@heavy-VirtualBox:~$ sudo rm -R /home/user1
+heavy@heavy-VirtualBox:~$ ls /home
+heavy
+heavy@heavy-VirtualBox:~$ passwd
+Смена пароля для heavy.
+Текущий пароль: 
+Текущий пароль: 
+
+heavy@heavy-VirtualBox:~$ cat /etc/passwd
+root:x:0:0:root:/root:/bin/bash
+daemon:x:1:1:daemon:/usr/sbin:/usr/sbin/nologin
+bin:x:2:2:bin:/bin:/usr/sbin/nologin
+sys:x:3:3:sys:/dev:/usr/sbin/nologin
+sync:x:4:65534:sync:/bin:/bin/sync
+games:x:5:60:games:/usr/games:/usr/sbin/nologin
+man:x:6:12:man:/var/cache/man:/usr/sbin/nologin
+lp:x:7:7:lp:/var/spool/lpd:/usr/sbin/nologin
+mail:x:8:8:mail:/var/mail:/usr/sbin/nologin
+news:x:9:9:news:/var/spool/news:/usr/sbin/nologin
+uucp:x:10:10:uucp:/var/spool/uucp:/usr/sbin/nologin
+proxy:x:13:13:proxy:/bin:/usr/sbin/nologin
+www-data:x:33:33:www-data:/var/www:/usr/sbin/nologin
+backup:x:34:34:backup:/var/backups:/usr/sbin/nologin
+list:x:38:38:Mailing List Manager:/var/list:/usr/sbin/nologin
+irc:x:39:39:ircd:/run/ircd:/usr/sbin/nologin
+gnats:x:41:41:Gnats Bug-Reporting System (admin):/var/lib/gnats:/usr/sbin/nologin
+nobody:x:65534:65534:nobody:/nonexistent:/usr/sbin/nologin
+systemd-network:x:100:102:systemd Network Management,,,:/run/systemd:/usr/sbin/nologin
+systemd-resolve:x:101:103:systemd Resolver,,,:/run/systemd:/usr/sbin/nologin
+messagebus:x:102:105::/nonexistent:/usr/sbin/nologin
+systemd-timesync:x:103:106:systemd Time Synchronization,,,:/run/systemd:/usr/sbin/nologin
+syslog:x:104:111::/home/syslog:/usr/sbin/nologin
+_apt:x:105:65534::/nonexistent:/usr/sbin/nologin
+tss:x:106:112:TPM software stack,,,:/var/lib/tpm:/bin/false
+uuidd:x:107:115::/run/uuidd:/usr/sbin/nologin
+systemd-oom:x:108:116:systemd Userspace OOM Killer,,,:/run/systemd:/usr/sbin/nologin
+tcpdump:x:109:117::/nonexistent:/usr/sbin/nologin
+avahi-autoipd:x:110:119:Avahi autoip daemon,,,:/var/lib/avahi-autoipd:/usr/sbin/nologin
+usbmux:x:111:46:usbmux daemon,,,:/var/lib/usbmux:/usr/sbin/nologin
+dnsmasq:x:112:65534:dnsmasq,,,:/var/lib/misc:/usr/sbin/nologin
+kernoops:x:113:65534:Kernel Oops Tracking Daemon,,,:/:/usr/sbin/nologin
+avahi:x:114:121:Avahi mDNS daemon,,,:/run/avahi-daemon:/usr/sbin/nologin
+cups-pk-helper:x:115:122:user for cups-pk-helper service,,,:/home/cups-pk-helper:/usr/sbin/nologin
+rtkit:x:116:123:RealtimeKit,,,:/proc:/usr/sbin/nologin
+whoopsie:x:117:124::/nonexistent:/bin/false
+sssd:x:118:125:SSSD system user,,,:/var/lib/sss:/usr/sbin/nologin
+speech-dispatcher:x:119:29:Speech Dispatcher,,,:/run/speech-dispatcher:/bin/false
+nm-openvpn:x:120:126:NetworkManager OpenVPN,,,:/var/lib/openvpn/chroot:/usr/sbin/nologin
+saned:x:121:128::/var/lib/saned:/usr/sbin/nologin
+colord:x:122:129:colord colour management daemon,,,:/var/lib/colord:/usr/sbin/nologin
+geoclue:x:123:130::/var/lib/geoclue:/usr/sbin/nologin
+pulse:x:124:131:PulseAudio daemon,,,:/run/pulse:/usr/sbin/nologin
+gnome-initial-setup:x:125:65534::/run/gnome-initial-setup/:/bin/false
+hplip:x:126:7:HPLIP system user,,,:/run/hplip:/bin/false
+gdm:x:127:133:Gnome Display Manager:/var/lib/gdm3:/bin/false
+heavy:x:1000:1000:Heavy,,,:/home/heavy:/bin/bash
+vboxadd:x:999:1::/var/run/vboxadd:/bin/false
+sshd:x:128:65534::/run/sshd:/usr/sbin/nologin
+user1:x:1001:1001::/home/user1:/bin/bash
+heavy@heavy-VirtualBox:~$ userdel user1
+userdel: Permission denied.
+userdel: не удалось заблокировать /etc/passwd; попробуйте ещё раз позже.
+heavy@heavy-VirtualBox:~$ sudo userdel user1
+heavy@heavy-VirtualBox:~$ cat /etc/passwd
+root:x:0:0:root:/root:/bin/bash
+daemon:x:1:1:daemon:/usr/sbin:/usr/sbin/nologin
+bin:x:2:2:bin:/bin:/usr/sbin/nologin
+sys:x:3:3:sys:/dev:/usr/sbin/nologin
+sync:x:4:65534:sync:/bin:/bin/sync
+games:x:5:60:games:/usr/games:/usr/sbin/nologin
+man:x:6:12:man:/var/cache/man:/usr/sbin/nologin
+lp:x:7:7:lp:/var/spool/lpd:/usr/sbin/nologin
+mail:x:8:8:mail:/var/mail:/usr/sbin/nologin
+news:x:9:9:news:/var/spool/news:/usr/sbin/nologin
+uucp:x:10:10:uucp:/var/spool/uucp:/usr/sbin/nologin
+proxy:x:13:13:proxy:/bin:/usr/sbin/nologin
+www-data:x:33:33:www-data:/var/www:/usr/sbin/nologin
+backup:x:34:34:backup:/var/backups:/usr/sbin/nologin
+list:x:38:38:Mailing List Manager:/var/list:/usr/sbin/nologin
+irc:x:39:39:ircd:/run/ircd:/usr/sbin/nologin
+gnats:x:41:41:Gnats Bug-Reporting System (admin):/var/lib/gnats:/usr/sbin/nologin
+nobody:x:65534:65534:nobody:/nonexistent:/usr/sbin/nologin
+systemd-network:x:100:102:systemd Network Management,,,:/run/systemd:/usr/sbin/nologin
+systemd-resolve:x:101:103:systemd Resolver,,,:/run/systemd:/usr/sbin/nologin
+messagebus:x:102:105::/nonexistent:/usr/sbin/nologin
+systemd-timesync:x:103:106:systemd Time Synchronization,,,:/run/systemd:/usr/sbin/nologin
+syslog:x:104:111::/home/syslog:/usr/sbin/nologin
+_apt:x:105:65534::/nonexistent:/usr/sbin/nologin
+tss:x:106:112:TPM software stack,,,:/var/lib/tpm:/bin/false
+uuidd:x:107:115::/run/uuidd:/usr/sbin/nologin
+systemd-oom:x:108:116:systemd Userspace OOM Killer,,,:/run/systemd:/usr/sbin/nologin
+tcpdump:x:109:117::/nonexistent:/usr/sbin/nologin
+avahi-autoipd:x:110:119:Avahi autoip daemon,,,:/var/lib/avahi-autoipd:/usr/sbin/nologin
+usbmux:x:111:46:usbmux daemon,,,:/var/lib/usbmux:/usr/sbin/nologin
+dnsmasq:x:112:65534:dnsmasq,,,:/var/lib/misc:/usr/sbin/nologin
+kernoops:x:113:65534:Kernel Oops Tracking Daemon,,,:/:/usr/sbin/nologin
+avahi:x:114:121:Avahi mDNS daemon,,,:/run/avahi-daemon:/usr/sbin/nologin
+cups-pk-helper:x:115:122:user for cups-pk-helper service,,,:/home/cups-pk-helper:/usr/sbin/nologin
+rtkit:x:116:123:RealtimeKit,,,:/proc:/usr/sbin/nologin
+whoopsie:x:117:124::/nonexistent:/bin/false
+sssd:x:118:125:SSSD system user,,,:/var/lib/sss:/usr/sbin/nologin
+speech-dispatcher:x:119:29:Speech Dispatcher,,,:/run/speech-dispatcher:/bin/false
+nm-openvpn:x:120:126:NetworkManager OpenVPN,,,:/var/lib/openvpn/chroot:/usr/sbin/nologin
+saned:x:121:128::/var/lib/saned:/usr/sbin/nologin
+colord:x:122:129:colord colour management daemon,,,:/var/lib/colord:/usr/sbin/nologin
+geoclue:x:123:130::/var/lib/geoclue:/usr/sbin/nologin
+pulse:x:124:131:PulseAudio daemon,,,:/run/pulse:/usr/sbin/nologin
+gnome-initial-setup:x:125:65534::/run/gnome-initial-setup/:/bin/false
+hplip:x:126:7:HPLIP system user,,,:/run/hplip:/bin/false
+gdm:x:127:133:Gnome Display Manager:/var/lib/gdm3:/bin/false
+heavy:x:1000:1000:Heavy,,,:/home/heavy:/bin/bash
+vboxadd:x:999:1::/var/run/vboxadd:/bin/false
+sshd:x:128:65534::/run/sshd:/usr/sbin/nologin
+
+
+heavy@heavy-VirtualBox:~$ sudo groupdd users
+sudo: groupdd: команда не найдена
+heavy@heavy-VirtualBox:~$ sudo groupadd users
+groupadd: группа «users» уже существует
+heavy@heavy-VirtualBox:~$ sudo groupadd users1
+heavy@heavy-VirtualBox:~$ cat /etc/shadows
+cat: /etc/shadows: Нет такого файла или каталога
+heavy@heavy-VirtualBox:~$ cat /etc/shadow
+cat: /etc/shadow: Отказано в доступе
+heavy@heavy-VirtualBox:~$ sudo cat /etc/shadow
+root:!:19393:0:99999:7:::
+daemon:*:19213:0:99999:7:::
+bin:*:19213:0:99999:7:::
+sys:*:19213:0:99999:7:::
+sync:*:19213:0:99999:7:::
+games:*:19213:0:99999:7:::
+man:*:19213:0:99999:7:::
+lp:*:19213:0:99999:7:::
+mail:*:19213:0:99999:7:::
+news:*:19213:0:99999:7:::
+uucp:*:19213:0:99999:7:::
+proxy:*:19213:0:99999:7:::
+www-data:*:19213:0:99999:7:::
+backup:*:19213:0:99999:7:::
+list:*:19213:0:99999:7:::
+irc:*:19213:0:99999:7:::
+gnats:*:19213:0:99999:7:::
+nobody:*:19213:0:99999:7:::
+systemd-network:*:19213:0:99999:7:::
+systemd-resolve:*:19213:0:99999:7:::
+messagebus:*:19213:0:99999:7:::
+systemd-timesync:*:19213:0:99999:7:::
+syslog:*:19213:0:99999:7:::
+_apt:*:19213:0:99999:7:::
+tss:*:19213:0:99999:7:::
+uuidd:*:19213:0:99999:7:::
+systemd-oom:*:19213:0:99999:7:::
+tcpdump:*:19213:0:99999:7:::
+avahi-autoipd:*:19213:0:99999:7:::
+usbmux:*:19213:0:99999:7:::
+dnsmasq:*:19213:0:99999:7:::
+kernoops:*:19213:0:99999:7:::
+avahi:*:19213:0:99999:7:::
+cups-pk-helper:*:19213:0:99999:7:::
+rtkit:*:19213:0:99999:7:::
+whoopsie:*:19213:0:99999:7:::
+sssd:*:19213:0:99999:7:::
+speech-dispatcher:!:19213:0:99999:7:::
+nm-openvpn:*:19213:0:99999:7:::
+saned:*:19213:0:99999:7:::
+colord:*:19213:0:99999:7:::
+geoclue:*:19213:0:99999:7:::
+pulse:*:19213:0:99999:7:::
+gnome-initial-setup:*:19213:0:99999:7:::
+hplip:*:19213:0:99999:7:::
+gdm:*:19213:0:99999:7:::
+heavy:$y$j9T$/XB0NJdr6qoKmaG/RKZCR/$z3n1F2HVyG7hpjLWdgN2k11YpAuAlCkbZBGbQ/r22vA:19393:0:99999:7:::
+vboxadd:!:19393::::::
+sshd:*:19393:0:99999:7:::
+heavy@heavy-VirtualBox:~$ sudo cat /etc/shadow | grep users1
+heavy@heavy-VirtualBox:~$ sudo cat /etc/shadow | grep heavy
+heavy:$y$j9T$/XB0NJdr6qoKmaG/RKZCR/$z3n1F2HVyG7hpjLWdgN2k11YpAuAlCkbZBGbQ/r22vA:19393:0:99999:7:::
+heavy@heavy-VirtualBox:~$ sudo cat /etc/gshadow | grep users1 
+users1:!::
+heavy@heavy-VirtualBox:~$ sudo groupadd users1 heavy
+Использование: groupadd [параметры] ГРУППА
+
+Параметры:
+  -f, --force                   закончить работу без ошибки, если группа
+                                существует и отменить -g, если GID уже
+                                используется
+  -g, --gid GID                 для новой группы использовать указанный GID
+  -h, --help                    показать данное сообщение и закончить работу
+  -K, --key КЛЮЧ=ЗНАЧЕНИЕ       заменить значение по умолчанию
+                                из /etc/login.defs
+  -o, --non-unique              разрешить создание групп с повторяющимся
+                                (не уникальным) GID
+  -p, --password ПАРОЛЬ         использовать этот шифрованный пароль для
+                                новой группы
+  -r, --system                  создавать системную группу
+  -R, --root КАТ_CHROOT         каталог, в который выполняется chroot
+  -P, --prefix PREFIX_DIR       directory prefix
+      --extrausers              Use the extra users database
+
+heavy@heavy-VirtualBox:~$ sudo useradd -s /bin/bash -m -d /home/user1 user1
+heavy@heavy-VirtualBox:~$ sudo groupadd users2
+heavy@heavy-VirtualBox:~$ sudo cat /etc/gshadow | grep users2
+users2:!::
+heavy@heavy-VirtualBox:~$ sudo usermod users1 user1
+Использование: usermod [параметры] ПОЛЬЗОВАТЕЛЬ
+
+Параметры:
+  -b, --badnames                allow bad names
+  -c, --comment КОММЕНТАРИЙ     новое значение поля GECOS
+  -d, --home ДОМ_КАТ            новый домашний каталог учётной записи
+  -e, --expiredate ДАТА_УСТ     установить дату окончания действия
+                                учётной записи в ДАТА_УСТ
+  -f, --inactive НЕАКТИВНОСТЬ   установить период неактивности пароля после
+                                устаревания учётной записи равным НЕАКТИВНОСТЬ
+  -g, --gid ГРУППА              принудительно назначить первичную ГРУППУ
+  -G, --groups ГРУППЫ           список дополнительных ГРУПП
+  -a, --append                  добавить пользователя в дополнительные
+                                ГРУППЫ, указанные в параметре -G не удаляя
+                                пользователя из других групп
+  -h, --help                    показать данное сообщение и закончить работу
+  -l, --login НОВОЕ_ИМЯ         новое значение имени учётной записи
+  -L, --lock                    заблокировать учётную запись
+  -m, --move-home               переместить содержимое домашнего каталога в
+                                новое место (использовать только вместе с -d)
+  -o, --non-unique              разрешить создание учётной записи с уже
+                                имеющимся (не уникальным) UID
+  -p, --password ПАРОЛЬ         задать новый шифрованный пароль для
+                                учётной записи
+  -R, --root КАТ_CHROOT         каталог, в который выполняется chroot
+  -P, --prefix PREFIX_DIR       prefix directory where are located the /etc/* files
+  -s, --shell ОБОЛОЧКА          новая регистрационная оболочка для учётной
+                                записи
+  -u, --uid UID                 новый UID для учётной записи
+  -U, --unlock                  разблокировать учётную запись
+  -v, --add-subuids ПЕРВ-ПОСЛ   добавить диапазон подчинённых uid
+  -V, --del-subuids ПЕРВ-ПОСЛ   удалить диапазон подчинённых uid
+  -w, --add-subgids ПЕРВ-ПОСЛ   добавить диапазон подчинённых gid
+  -W, --del-subgids ПЕРВ-ПОСЛ   удалить диапазон подчинённых gid
+  -Z, --selinux-user SEUSER     новое пользовательское сопоставление
+                                SELinux для учётной записи
+
+heavy@heavy-VirtualBox:~$ sudo usermod -g users1 user1
+heavy@heavy-VirtualBox:~$ sudo cat /etc/gshadow | grep users1
+users1:!::
+heavy@heavy-VirtualBox:~$ sudo cat /etc/group
+root:x:0:
+daemon:x:1:
+bin:x:2:
+sys:x:3:
+adm:x:4:syslog,heavy
+tty:x:5:
+disk:x:6:
+lp:x:7:
+mail:x:8:
+news:x:9:
+uucp:x:10:
+man:x:12:
+proxy:x:13:
+kmem:x:15:
+dialout:x:20:
+fax:x:21:
+voice:x:22:
+cdrom:x:24:heavy
+floppy:x:25:
+tape:x:26:
+sudo:x:27:heavy
+audio:x:29:pulse
+dip:x:30:heavy
+www-data:x:33:
+backup:x:34:
+operator:x:37:
+list:x:38:
+irc:x:39:
+src:x:40:
+gnats:x:41:
+shadow:x:42:
+utmp:x:43:
+video:x:44:
+sasl:x:45:
+plugdev:x:46:heavy
+staff:x:50:
+games:x:60:
+users:x:100:
+nogroup:x:65534:
+systemd-journal:x:101:
+systemd-network:x:102:
+systemd-resolve:x:103:
+crontab:x:104:
+messagebus:x:105:
+systemd-timesync:x:106:
+input:x:107:
+sgx:x:108:
+kvm:x:109:
+render:x:110:
+syslog:x:111:
+tss:x:112:
+bluetooth:x:113:
+ssl-cert:x:114:
+uuidd:x:115:
+systemd-oom:x:116:
+tcpdump:x:117:
+_ssh:x:118:
+avahi-autoipd:x:119:
+netdev:x:120:
+avahi:x:121:
+lpadmin:x:122:heavy
+rtkit:x:123:
+whoopsie:x:124:
+sssd:x:125:
+nm-openvpn:x:126:
+scanner:x:127:saned
+saned:x:128:
+colord:x:129:
+geoclue:x:130:
+pulse:x:131:
+pulse-access:x:132:
+gdm:x:133:
+lxd:x:134:heavy
+heavy:x:1000:
+sambashare:x:135:heavy
+vboxsf:x:136:
+vboxdrmipc:x:999:
+users1:x:1001:
+user1:x:1002:
+users2:x:1003:
+heavy@heavy-VirtualBox:~$ sudo cat /etc/
+Display all 225 possibilities? (y or n)
+acpi/                   debian_version          hosts                   magic.mime              profile                 subuid
+adduser.conf            default/                hosts.allow             mailcap                 profile.d/              subuid-
+alsa/                   deluser.conf            hosts.deny              mailcap.order           protocols               sudo.conf
+alternatives/           depmod.d/               hp/                     manpath.config          pulse/                  sudoers
+anacrontab              dhcp/                   ifplugd/                mc/                     .pwd.lock               sudoers.d/
+apg.conf                dictionaries-common/    init/                   mime.types              python3/                sudo_logsrvd.conf
+apm/                    dpkg/                   init.d/                 mke2fs.conf             python3.10/             sysctl.conf
+apparmor/               e2scrub.conf            initramfs-tools/        ModemManager/           rc0.d/                  sysctl.d/
+apparmor.d/             emacs/                  inputrc                 modprobe.d/             rc1.d/                  systemd/
+apport/                 environment             insserv.conf.d/         modules                 rc2.d/                  terminfo/
+appstream.conf          environment.d/          ipp-usb/                modules-load.d/         rc3.d/                  thermald/
+apt/                    ethertypes              iproute2/               mtab                    rc4.d/                  timezone
+avahi/                  firefox/                issue                   nanorc                  rc5.d/                  tmpfiles.d/
+bash.bashrc             fonts/                  issue.net               netconfig               rc6.d/                  ubuntu-advantage/
+bash_completion         fprintd.conf            kernel/                 netplan/                rcS.d/                  ucf.conf
+bash_completion.d/      fstab                   kernel-img.conf         network/                resolv.conf             udev/
+bindresvport.blacklist  fuse.conf               kerneloops.conf         networkd-dispatcher/    rmt                     udisks2/
+binfmt.d/               fwupd/                  ldap/                   NetworkManager/         rpc                     ufw/
+bluetooth/              gai.conf                ld.so.cache             networks                rsyslog.conf            update-manager/
+brlapi.key              gdb/                    ld.so.conf              newt/                   rsyslog.d/              update-motd.d/
+brltty/                 gdm3/                   ld.so.conf.d/           nftables.conf           rygel.conf              update-notifier/
+brltty.conf             geoclue/                legal                   nsswitch.conf           sane.d/                 UPower/
+ca-certificates/        ghostscript/            libao.conf              openvpn/                security/               usb_modeswitch.conf
+ca-certificates.conf    glvnd/                  libaudit.conf           opt/                    selinux/                usb_modeswitch.d/
+chatscripts/            gnome/                  libblockdev/            os-release              sensors3.conf           vim/
+console-setup/          groff/                  libnl-3/                PackageKit/             sensors.d/              vmware-tools/
+cracklib/               group                   libpaper.d/             pam.conf                services                vtrgb
+cron.d/                 group-                  libreoffice/            pam.d/                  sgml/                   vulkan/
+cron.daily/             grub.d/                 locale.alias            papersize               shadow                  wgetrc
+cron.hourly/            gshadow                 locale.gen              passwd                  shadow-                 wpa_supplicant/
+cron.monthly/           gshadow-                localtime               passwd-                 shells                  X11/
+crontab                 gss/                    logcheck/               pcmcia/                 skel/                   xattr.conf
+cron.weekly/            gtk-2.0/                login.defs              perl/                   snmp/                   xdg/
+cups/                   gtk-3.0/                logrotate.conf          pki/                    speech-dispatcher/      xml/
+cupshelpers/            hdparm.conf             logrotate.d/            pm/                     ssh/                    zsh_command_not_found
+dbus-1/                 host.conf               lsb-release             pnm2ppa.conf            ssl/                    
+dconf/                  hostid                  machine-id              polkit-1/               subgid                  
+debconf.conf            hostname                magic                   ppp/                    subgid-                 
+
+heavy@heavy-VirtualBox:~$ sudo getent users1 developers
+
+heavy@heavy-VirtualBox:~$ groups user1
+user1 : users1
+heavy@heavy-VirtualBox:~$ sudo usermod -a -G users2 user1
+heavy@heavy-VirtualBox:~$ groups user1
+user1 : users1 users2
+
+heavy@heavy-VirtualBox:~$ sudo usermod -G users1 user1
+heavy@heavy-VirtualBox:~$ groups user1
+user1 : users1
+
+heavy@heavy-VirtualBox:~$ sudo adduser user3
+Добавляется пользователь «user3» ...
+Добавляется новая группа «user3» (1004) ...
+Добавляется новый пользователь «user3» (1002) в группу «user3» ...
+Создаётся домашний каталог «/home/user3» ...
+Копирование файлов из «/etc/skel» ...
