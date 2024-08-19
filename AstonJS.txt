@@ -1,0 +1,66 @@
+
+1. Написать программу, которая принимает на вход два целых числа (a и b) и совершает с ними следующие действия:
+- сравнивает эти два числа и возвращает результат сравнения путем вывода в консоль одного из вариантов: 
+"a > b", "a < b" или "a = b";
+- совершает с этими числами операции сложения, вычитания, деления и умножения и результат выводит в консоль.
+
+class HelloCodiva {  
+  public static void main(String[] args) {
+    Scanner in = new Scanner(System.in);    
+    System.out.print("Введите число a: ");
+    float a = in.nextInt();
+    System.out.print("Введите число b: ");
+    float b = in.nextInt();
+    
+    //- сравнивает эти два числа и возвращает результат сравнения путем вывода в консоль одного из вариантов: "a > b", "a < b" или "a = b";
+    if (a > b) {
+      System.out.println("a > b");    
+    } else if (a < b) {
+      System.out.println("a < b");
+    } else {
+      System.out.println("a = b");
+    }        
+    //- совершает с этими числами операции сложения, вычитания, деления и умножения и результат выводит в консоль.
+    System.out.println("a + b = " + (a + b));
+    System.out.println("a - b = " + (a - b));
+    System.out.println("a / b = " + (a / b));
+    System.out.println("a * b = " + (a * b));
+  }
+}
+
+
+
+2. Написать программу, которая принимает на вход две строки (a и b) и сравнивает их. 
+В результате сравнения в консоль должно быть выведено одно из сообщений: 
+"Строки неидентичны" или "Строки идентичны"
+
+class HelloCodiva {  
+  public static void main(String[] args) {
+    Scanner in = new Scanner(System.in);    
+    System.out.print("Введите первую строку: ");
+    String a = in.nextLine();
+    System.out.print("Введите вторую строку: ");
+    String b = in.nextLine();
+    
+    //- сравнивает строки
+    if (a.equals(b)) {
+      System.out.println("строки идентичны");   
+    } else {
+      System.out.println("строки неидентичны");
+    }        
+  }
+}
+
+3. Задан массив целых чисел: [1, 2, 3, 4, 5, 6, 7, 8, 9,10] 
+Необходимо написать программу, которая выведет в консоль все чётные числа. 
+
+class HelloCodiva {  
+  public static void main(String[] args) {
+    int[] ar = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+    for (int i = 0; i < 10; i++) {
+        if (i % 2 == 0) {
+            System.out.println("Число " + i + " четное");
+        }
+    }    
+  }
+}
